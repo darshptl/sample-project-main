@@ -28,7 +28,12 @@ namespace WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage CreateUser(Guid userId, [FromBody] UserModel model)
         {
-            var user = _createUserService.Create(userId, model.Name, model.Email, model.Type, model.AnnualSalary, model.Age, model.Tags);
+            var user = _getUserService.GetUser(userId);
+            if (user != null)
+            {
+                return Found($"This Id already exists for a user. Please use a different id to be sent to this post request.");
+            }
+            user = _createUserService.Create(userId, model.Name, model.Email, model.Type, model.AnnualSalary, model.Age, model.Tags);
             return Found(new UserData(user));
         }
 
@@ -39,7 +44,7 @@ namespace WebApi.Controllers
             var user = _getUserService.GetUser(userId);
             if (user == null)
             {
-                return DoesNotExist();
+                return Found($"The User does not exist.");// or DoesNotExist();
             }
             _updateUserService.Update(user, model.Name, model.Email, model.Type, model.AnnualSalary, model.Age, model.Tags);
             return Found(new UserData(user));
@@ -52,7 +57,7 @@ namespace WebApi.Controllers
             var user = _getUserService.GetUser(userId);
             if (user == null)
             {
-                return DoesNotExist();
+                return Found($"The User does not exist.");// or DoesNotExist();
             }
             _deleteUserService.Delete(user);
             return Found();
