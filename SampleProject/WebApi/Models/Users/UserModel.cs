@@ -9,6 +9,7 @@ namespace WebApi.Models.Users
         public string Email { get; set; }
         public UserTypes Type { get; set; }
         public decimal? AnnualSalary { get; set; }
+        public int? Age { get; set; } // added
         public IEnumerable<string> Tags { get; set; }
     }
 }

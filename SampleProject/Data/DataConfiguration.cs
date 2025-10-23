@@ -33,9 +33,22 @@ namespace Data
 
         private static IDocumentStore InitializeDocumentStore(Assembly assembly, bool createIndexes)
         {
+            // Read Raven URL from config with a safe fallback
+            //var ravenUrl = ConfigurationManager.AppSettings["Raven.Url"];
+            //if (string.IsNullOrWhiteSpace(ravenUrl))
+            //{
+            //    ravenUrl = "http://127.0.0.1:8080/";
+            //}
             var documentStore = new DocumentStore
                                 {
-                                    Url = "http://localhost:8080/",
+                                    //Url = "http://localhost:8080/",
+                                    //Changing the Url to http://127.0.0.1:8080 because thats where RavenDB is running for me darshptl. 
+                                    //This is the minimal change but yu can also read in the url from the Web.config as below but it requires
+                                    //Systeminstalling NuGet package System.Configuration.ConfigurationManager in the Data project so ConfigurationManager
+                                    //is available at compile time.
+                                    //Url = revenUrl,
+
+                                    Url = "http://127.0.0.1:8080",
                                     DefaultDatabase = "SampleProject",
                                     Conventions =
                                     {

@@ -27,8 +27,10 @@ namespace Data.Repositories
                 query = query.WhereEquals("Type", (int)userType);
                 hasFirstParameter = true;
             }
-
-            if (name != null)
+            //Update name only if its not null. Update to blank "" if the requirement states so
+            ////As of now I made it to accept one empty space " ". 
+            /////The quotes-quotes "" is still considered as null and it will breakand so that is handled too
+            if (name != null && name != "")
             {
                 if (hasFirstParameter)
                 {
@@ -40,8 +42,10 @@ namespace Data.Repositories
                 }
                 query = query.Where($"Name:*{name}*");
             }
-
-            if (email != null)
+            //Update email only if not null. Update to blank "" if the requirement states so.
+            ////As of now I made it to accept one empty space " ". 
+            /////The quotes-quotes "" is still considered as null and it will breakand so that is handled too
+            if (email != null && email != "")
             {
                 if (hasFirstParameter)
                 {
