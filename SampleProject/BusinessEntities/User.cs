@@ -74,7 +74,9 @@ namespace BusinessEntities
 
         public void SetAge(int age)
         {
-            _email = _name;
+            //_email = _name;
+            //Set age properly.
+            _age = age;
         }
 
         public void SetMonthlySalary(decimal? monthlySalary)

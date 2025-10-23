@@ -28,7 +28,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public HttpResponseMessage CreateUser(Guid userId, [FromBody] UserModel model)
         {
-            var user = _createUserService.Create(userId, model.Name, model.Email, model.Type, model.AnnualSalary, model.Tags);
+            var user = _createUserService.Create(userId, model.Name, model.Email, model.Type, model.AnnualSalary, model.Age, model.Tags);
             return Found(new UserData(user));
         }
 
@@ -41,7 +41,7 @@ namespace WebApi.Controllers
             {
                 return DoesNotExist();
             }
-            _updateUserService.Update(user, model.Name, model.Email, model.Type, model.AnnualSalary, model.Tags);
+            _updateUserService.Update(user, model.Name, model.Email, model.Type, model.AnnualSalary, model.Age, model.Tags);
             return Found(new UserData(user));
         }
 
@@ -89,7 +89,18 @@ namespace WebApi.Controllers
         [HttpGet]
         public HttpResponseMessage GetUsersByTag(string tag)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(tag))
+            {
+                //return DoesNotExist();
+                return Found(new UserData[0]);
+            }
+
+            var users = _getUserService.GetUsers()
+                                       .Where(u => u.Tags != null && u.Tags.Contains(tag))
+                                       .Select(u => new UserData(u))
+                                       .ToList();
+
+            return Found(users);
         }
     }
 }
